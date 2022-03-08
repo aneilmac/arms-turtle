@@ -22,6 +22,9 @@ arm2Speed = 5
 locusPosition :: Float
 locusPosition = 0.5
 
+locusColor :: Color
+locusColor = red
+
 main :: IO ()
 main = runWorld $ do
   -- Generate arms
@@ -58,7 +61,7 @@ drawLocusLine armA armB t = do
   t >/> do
     jump ah
     let v = bh G.- ah
-    setRepresentation $ G.color red $ G.line [(0, 0), (magV v, 0)]
+    setRepresentation $ G.color locusColor $ G.line [(0, 0), (magV v, 0)]
     setHeading $ radToDeg $ argV v
 
 -- | Moves the locus at its new postion.
@@ -83,17 +86,17 @@ armTurtle rSpeed length = do
     setRotationSpeed rSpeed
   return t
 
--- | Generates the turtle used to draw the locus. Is a red dot, with a red 
--- | line which moves instantly.
+-- | Generates the turtle used to draw the locus. Is a coloured dot, with a 
+--   coloured line, and moves instantly.
 locusTurtle :: WorldCommand Turtle
 locusTurtle = do
   t <- makeTurtle
   t >/> do
     setSpeed 0
     setRotationSpeed 0
-    setPenColor red
+    setPenColor locusColor
     setPenSize 2
-    setRepresentation $ G.color red $ G.circleSolid 2
+    setRepresentation $ G.color locusColor $ G.circleSolid 2
   return t
 
 -- | Grabs the endpoint of a Turtle arm. This is calcualted
