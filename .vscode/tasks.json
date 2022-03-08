@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "stack build",
+      "type": "shell",
+      "command": "stack build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "run arms-ts",
+      "type": "shell",
+      "command": "stack exec arms-ts",
+    }
+  ]
+}
