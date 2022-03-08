@@ -96,8 +96,11 @@ locusTurtle = do
     setRepresentation $ G.color red $ G.circleSolid 2
   return t
 
--- | Grabs the endpoint of a Turtle arm.
-pointFromArm :: Float -> TurtleCommand Point 
+-- | Grabs the endpoint of a Turtle arm. This is calcualted
+--   from a turtle's heading, turned into a unit vector, multiplied by 
+--   the giving length.
+pointFromArm :: Float -- ^ Length of line
+             -> TurtleCommand Point 
 pointFromArm length = heading >>= \h -> return $ length G.* unitVectorAtAngle (degToRad h)
 
 -- | What it says on the tin. A lerp function. 
