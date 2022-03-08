@@ -7,8 +7,11 @@ import Graphics.Gloss.Data.Vector
 import Graphics.Gloss.Geometry.Angle (degToRad, radToDeg)
 import Graphics.WorldTurtle
 
-armLength :: Float
-armLength = 100
+armLength1 :: Float
+armLength1 = 100
+
+armLength2 :: Float
+armLength2 = 100
 
 arm1Speed :: Float
 arm1Speed = 2
@@ -16,15 +19,25 @@ arm1Speed = 2
 arm2Speed :: Float
 arm2Speed = 5
 
+locusPosition :: Float
+locusPosition = 0.5
+
 main :: IO ()
 main = runWorld $ do
   -- Generate arms
-  arm1 <- armTurtle arm1Speed
-  arm2 <- armTurtle arm2Speed
+  arm1 <- armTurtle arm1Speed armLength1
+  arm2 <- armTurtle arm2Speed armLength2
   -- Generate elastic line
-  elastic <- armTurtle 0
+  elastic <- armTurtle 0 0
   -- Generate locus point
   locus <- locusTurtle
+  
+  -- Set up Locus's initial position
+  -- based on starting radiuses of lines.
+  locus >/> setPenUp 
+  drawLocus arm1 arm2 locus
+  locus >/> setPenDown
+  
   forever $ do 
     -- Draw arms
     arm1 >/> rt arm1Speed
@@ -40,8 +53,8 @@ drawLocusLine :: Turtle -- ^ Arm A
               -> Turtle -- ^ Elastic
               -> WorldCommand ()
 drawLocusLine armA armB t = do
-  ah <- armA >/> pointFromArm
-  bh <- armB >/> pointFromArm
+  ah <- armA >/> pointFromArm armLength1
+  bh <- armB >/> pointFromArm armLength2
   t >/> do
     jump ah
     let v = bh G.- ah
@@ -53,18 +66,18 @@ drawLocus :: Turtle -- ^ Arm A
           -> Turtle -- ^ Arm B
           -> Turtle -- ^ Locus
           -> WorldCommand ()
-drawLocus a b t = do
-   p <- a >/> pointFromArm
-   q <- b >/> pointFromArm
-   let l = lerp 0.5 p q
+drawLocus armA armB t = do
+   p <- armA >/> pointFromArm armLength1
+   q <- armB >/> pointFromArm armLength2
+   let l = lerp locusPosition p q
    t >/> goto l
 
 -- | Turtle representing an arm/elastic line. Is only used to rotate. 
-armTurtle :: Float -> WorldCommand Turtle
-armTurtle rSpeed = do
+armTurtle :: Float -> Float -> WorldCommand Turtle
+armTurtle rSpeed length = do
   t <- makeTurtle
   t >/> do
-    setRepresentation $ G.color black $ G.line [(0, 0), (armLength, 0)]
+    setRepresentation $ G.color black $ G.line [(0, 0), (length, 0)]
     setSpeed 0
     setRotationSpeed 0
     setRotationSpeed rSpeed
@@ -76,7 +89,6 @@ locusTurtle :: WorldCommand Turtle
 locusTurtle = do
   t <- makeTurtle
   t >/> do
-    jump (0, armLength)
     setSpeed 0
     setRotationSpeed 0
     setPenColor red
@@ -85,8 +97,8 @@ locusTurtle = do
   return t
 
 -- | Grabs the endpoint of a Turtle arm.
-pointFromArm :: TurtleCommand Point 
-pointFromArm = heading >>= \h -> return $ armLength G.* unitVectorAtAngle (degToRad h)
+pointFromArm :: Float -> TurtleCommand Point 
+pointFromArm length = heading >>= \h -> return $ length G.* unitVectorAtAngle (degToRad h)
 
 -- | What it says on the tin. A lerp function. 
 lerp :: Float -- Coefficient between 0 and 1.
