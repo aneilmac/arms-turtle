@@ -41,6 +41,7 @@ main = runWorld $ do
   drawLocus arm1 arm2 locus
   locus >/> setPenDown
   
+  -- Main simulation loop which runs forever.
   forever $ do 
     -- Draw arms
     arm1 >/> rt arm1Speed
