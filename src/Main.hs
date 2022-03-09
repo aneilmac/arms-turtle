@@ -42,9 +42,12 @@ main = runWorld $ do
   
   -- Set up Locus's initial position
   -- based on starting radiuses of lines.
-  locus >/> setPenUp 
   drawLocus arm1 arm2 locus
-  locus >/> setPenDown
+
+  -- Sets the locus's point/trail visibility before we begin.
+  locus >/> do 
+    if locusTrailVisible then setPenDown else setPenUp
+    if locusPointVisible then setVisible else setInvisible
   
   -- Main simulation loop which runs forever.
   forever $ do 
@@ -103,8 +106,7 @@ locusTurtle = do
     setPenColor locusColor
     setPenSize 2
     setRepresentation $ G.color locusColor $ G.circleSolid 2
-    if locusPointVisible then setVisible else setInvisible
-    if locusTrailVisible then setPenDown else setPenUp
+    setPenUp
   return t
 
 -- | Grabs the endpoint of a Turtle arm. This is calcualted
