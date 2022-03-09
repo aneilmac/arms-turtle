@@ -4,6 +4,7 @@ import Control.Monad (forever, when)
 import qualified Graphics.Gloss.Data.Picture as G
 import qualified Graphics.Gloss.Data.Point.Arithmetic as G
 import Graphics.Gloss.Data.Vector
+    ( mulSV, unitVectorAtAngle, argV, magV )
 import Graphics.Gloss.Geometry.Angle (degToRad, radToDeg)
 import Graphics.WorldTurtle
 
@@ -14,8 +15,8 @@ armLength2 = 100
 
 -- | Sets the speed of the wto arms (negative values for couterclockwise).
 arm1Speed, arm2Speed :: Float
-arm1Speed = 2
-arm2Speed = 5
+arm1Speed = 1
+arm2Speed = 5/2
 
 -- | Sets whether the locus point/trail are visible.
 locusPointVisible, locusTrailVisible :: Bool
@@ -52,8 +53,7 @@ main = runWorld $ do
   -- Main simulation loop which runs forever.
   forever $ do 
     -- Draw arms
-    arm1 >/> rt arm1Speed
-    arm2 >/> rt arm2Speed
+    (arm1 >/> rt arm1Speed) >!> (arm2 >/> rt arm2Speed)
     -- Draw elastic
     drawLocusLine arm1 arm2 elastic
     -- Update locus
@@ -91,7 +91,6 @@ armTurtle rSpeed length = do
   t >/> do
     setRepresentation $ G.color black $ G.line [(0, 0), (length, 0)]
     setSpeed 0
-    setRotationSpeed 0
     setRotationSpeed rSpeed
   return t
 
