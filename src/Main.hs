@@ -1,27 +1,32 @@
 module Main where
 
-import Control.Monad (forever)
+import Control.Monad (forever, when)
 import qualified Graphics.Gloss.Data.Picture as G
 import qualified Graphics.Gloss.Data.Point.Arithmetic as G
 import Graphics.Gloss.Data.Vector
 import Graphics.Gloss.Geometry.Angle (degToRad, radToDeg)
 import Graphics.WorldTurtle
 
-armLength1 :: Float
+-- | Sets the raddii of the two arms.
+armLength1, armLength2 :: Float
 armLength1 = 100
-
-armLength2 :: Float
 armLength2 = 100
 
-arm1Speed :: Float
+-- | Sets the speed of the wto arms (negative values for couterclockwise).
+arm1Speed, arm2Speed :: Float
 arm1Speed = 2
-
-arm2Speed :: Float
 arm2Speed = 5
 
+-- | Sets whether the locus point/trail are visible.
+locusPointVisible, locusTrailVisible :: Bool
+locusPointVisible = True
+locusTrailVisible = True
+
+-- | Sets the locus position on the elastic band, as a ration between [0, 1].
 locusPosition :: Float
 locusPosition = 0.5
 
+-- | Sets the color of the locus point/trail/elastic band.
 locusColor :: Color
 locusColor = red
 
@@ -98,6 +103,8 @@ locusTurtle = do
     setPenColor locusColor
     setPenSize 2
     setRepresentation $ G.color locusColor $ G.circleSolid 2
+    if locusPointVisible then setVisible else setInvisible
+    if locusTrailVisible then setPenDown else setPenUp
   return t
 
 -- | Grabs the endpoint of a Turtle arm. This is calcualted
