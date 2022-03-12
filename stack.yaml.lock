@@ -5,18 +5,18 @@
 
 packages:
 - completed:
-    size: 1565366
+    size: 1565687
     subdir: worldturtle
-    url: https://github.com/aneilmac/worldturtle-haskell/archive/dee86cb043aa4bd7fb087a314c432ddeefca911d.tar.gz
+    url: https://github.com/aneilmac/worldturtle-haskell/archive/804b9a57da15b106902478fd95ccd666a94528b1.tar.gz
     name: worldturtle
-    version: 0.3.0.0
-    sha256: bc559296fe7d0f0edf019da3ca388d5d3aab2686e661c2f0dca2d4f5d3abfce2
+    version: 0.3.1.0
+    sha256: 744ef871ad11501532091a2533c9e74f63966a0c0efabb80b27f5ab4693b0aa7
     pantry-tree:
       size: 1212
-      sha256: 1d3d384eab7ccbd7e4ec0233f2b874f47ec0ce125655d8e19978fa7de0b6c40c
+      sha256: a8e36afdcbe7d6fae62e0fe0c49201b2395de86ceda9e3ecb69940ec3c8597b1
   original:
     subdir: worldturtle
-    url: https://github.com/aneilmac/worldturtle-haskell/archive/dee86cb043aa4bd7fb087a314c432ddeefca911d.tar.gz
+    url: https://github.com/aneilmac/worldturtle-haskell/archive/804b9a57da15b106902478fd95ccd666a94528b1.tar.gz
 snapshots:
 - completed:
     size: 590102

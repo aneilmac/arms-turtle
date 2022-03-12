@@ -15,8 +15,8 @@ armLength2 = 100
 
 -- | Sets the speed of the wto arms (negative values for couterclockwise).
 arm1Speed, arm2Speed :: Float
-arm1Speed = 1
-arm2Speed = 5/2
+arm1Speed = 20
+arm2Speed = 50
 
 -- | Sets whether the locus point/trail are visible.
 locusPointVisible, locusTrailVisible :: Bool
@@ -53,7 +53,7 @@ main = runWorld $ do
   -- Main simulation loop which runs forever.
   forever $ do 
     -- Draw arms
-    (arm1 >/> rt arm1Speed) >!> (arm2 >/> rt arm2Speed)
+    (arm1 >/> rt (arm1Speed / 50.0)) >!> (arm2 >/> rt (arm2Speed / 50.0))
     -- Draw elastic
     drawLocusLine arm1 arm2 elastic
     -- Update locus
@@ -91,7 +91,7 @@ armTurtle rSpeed length = do
   t >/> do
     setRepresentation $ G.color black $ G.line [(0, 0), (length, 0)]
     setSpeed 0
-    setRotationSpeed rSpeed
+    setRotationSpeed $ abs rSpeed
   return t
 
 -- | Generates the turtle used to draw the locus. Is a coloured dot, with a 
